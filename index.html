@@ -196,10 +196,11 @@
   .projects-grid{ display:grid; grid-template-columns: repeat(2,1fr); gap: 22px; }
   .proj-card{
     background: var(--paper-2); border:1px solid var(--line); border-radius: var(--radius);
-    padding: 30px; position:relative; overflow:hidden;
+    padding: 26px; position:relative; overflow:hidden;
     transition: transform .3s cubic-bezier(.22,.9,.32,1), box-shadow .3s ease, border-color .3s ease;
     will-change: transform;
   }
+  .proj-card.wide{ grid-column: span 2; }
   .proj-card::before{
     content:''; position:absolute; inset:0; border-radius: var(--radius);
     background: linear-gradient(135deg, rgba(127,211,199,0.12), transparent 60%);
@@ -207,12 +208,66 @@
   }
   .proj-card:hover{ box-shadow: 0 24px 44px -24px rgba(15,32,54,0.28); border-color: rgba(127,211,199,0.5); }
   .proj-card:hover::before{ opacity:1; }
+  .proj-head{ display:flex; align-items:center; gap:14px; }
+  .app-icon{ width:52px; height:52px; border-radius:14px; object-fit:cover; box-shadow: 0 4px 14px -4px rgba(15,32,54,0.3); flex-shrink:0; }
   .proj-card .idx{ font-family:'JetBrains Mono',monospace; font-size:12px; color: var(--teal-dim); }
-  .proj-card h3{ font-size: 21px; margin-top: 12px; color: var(--navy); letter-spacing:-0.01em; }
-  .proj-card .role{ font-size: 12px; color: var(--ink-dim); margin-top:4px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
-  .proj-card p.desc{ margin-top: 14px; font-size: 14px; color: var(--ink-dim); line-height:1.6; }
-  .proj-tags{ display:flex; flex-wrap:wrap; gap:7px; margin-top: 18px; }
-  .proj-tags span{ font-size:11.5px; font-family:'JetBrains Mono',monospace; color: var(--navy); background: rgba(127,211,199,0.15); padding: 4px 9px; border-radius:6px; }
+  .proj-card h3{ font-size: 19px; margin-top: 2px; color: var(--navy); letter-spacing:-0.01em; }
+  .proj-card .role{ font-size: 11.5px; color: var(--ink-dim); margin-top:2px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
+  .proj-card p.desc{ margin-top: 14px; font-size: 13.5px; color: var(--ink-dim); line-height:1.6; }
+  .proj-tags{ display:flex; flex-wrap:wrap; gap:7px; margin-top: 14px; }
+  .proj-tags span{ font-size:11px; font-family:'JetBrains Mono',monospace; color: var(--navy); background: rgba(127,211,199,0.15); padding: 4px 9px; border-radius:6px; }
+
+  .shot-row{ display:flex; gap:10px; margin-top:16px; overflow-x:auto; padding-bottom:4px; scrollbar-width:thin; }
+  .shot-row img{
+    height:180px; border-radius:12px; border:1px solid var(--line); flex-shrink:0;
+    box-shadow: 0 10px 24px -14px rgba(15,32,54,0.35); transition: transform .3s ease;
+  }
+  .shot-row img:hover{ transform: translateY(-4px) scale(1.02); }
+
+  .store-badges{ display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; }
+  .store-badge{
+    display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:600;
+    padding:9px 15px; border-radius:100px; background: var(--navy); color:#fff;
+    transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+  }
+  .store-badge:hover{ transform: translateY(-2px); background: var(--navy-2); box-shadow: 0 10px 20px -10px rgba(15,32,54,0.5); }
+  .proj-card{ cursor:pointer; }
+  .view-hint{
+    margin-top:16px; font-size:12.5px; font-weight:600; color: var(--teal-dim);
+    opacity:0; transform: translateX(-6px); transition: opacity .25s ease, transform .25s ease;
+  }
+  .proj-card:hover .view-hint{ opacity:1; transform: translateX(0); }
+
+  /* ===== Project Detail Modal ===== */
+  .modal-overlay{
+    position: fixed; inset:0; background: rgba(15,32,54,0.55); backdrop-filter: blur(4px);
+    display:flex; align-items:center; justify-content:center; padding: 24px; z-index: 200;
+    opacity:0; visibility:hidden; transition: opacity .3s ease, visibility .3s ease;
+  }
+  .modal-overlay.open{ opacity:1; visibility:visible; }
+  .modal-panel{
+    background: var(--paper-2); border-radius: 22px; max-width: 680px; width:100%;
+    max-height: 86vh; overflow-y:auto; padding: 36px; position:relative;
+    transform: translateY(24px) scale(0.97); transition: transform .35s cubic-bezier(.22,.9,.32,1);
+  }
+  .modal-overlay.open .modal-panel{ transform: translateY(0) scale(1); }
+  .modal-close{
+    position:absolute; top:20px; right:20px; width:36px; height:36px; border-radius:50%;
+    border:1px solid var(--line); background: var(--paper); cursor:pointer; font-size:15px;
+    color: var(--ink-dim); transition: background .2s ease, transform .2s ease;
+  }
+  .modal-close:hover{ background:#eee; transform: rotate(90deg); }
+  .modal-head{ display:flex; align-items:center; gap:16px; padding-right: 40px; }
+  .modal-head h3{ font-size:24px; color:var(--navy); letter-spacing:-0.01em; }
+  .modal-desc{ margin-top:18px; font-size:14.5px; color: var(--ink-dim); line-height:1.7; }
+  .modal-shots{ display:flex; gap:12px; margin-top:20px; overflow-x:auto; padding-bottom:6px; }
+  .modal-shots img{ height:280px; border-radius:14px; border:1px solid var(--line); flex-shrink:0; box-shadow: 0 14px 30px -16px rgba(15,32,54,0.35); }
+  #modalBadges{ margin-top:22px; }
+
+  @media (max-width: 640px){
+    .modal-panel{ padding:26px 20px; max-height: 90vh; }
+    .modal-shots img{ height:200px; }
+  }
 
   /* ===== EXPERIENCE TIMELINE ===== */
   .timeline{ position:relative; padding-left: 28px; border-left: 2px solid var(--line); }
@@ -259,6 +314,7 @@
     .phone.p3{ left: 0px; top:20px; }
     .about-grid{ grid-template-columns:1fr; gap:36px; }
     .projects-grid{ grid-template-columns:1fr; }
+    .proj-card.wide{ grid-column: span 1; }
     .contact{ margin: 0 14px; padding: 50px 24px; }
     .contact h2{ font-size:28px; }
     section{ padding: 60px 0; }
@@ -299,7 +355,7 @@
       </div>
       <div class="hero-stats fade-in-up d5">
         <div class="stat"><b class="counter" data-target="7" data-suffix="+">0</b><span>Years experience</span></div>
-        <div class="stat"><b class="counter" data-target="4" data-suffix="+">0</b><span>Apps shipped</span></div>
+        <div class="stat"><b class="counter" data-target="5" data-suffix="+">0</b><span>Apps shipped</span></div>
         <div class="stat"><b class="counter" data-target="100" data-suffix="%">0</b><span>Flutter &amp; Dart</span></div>
       </div>
     </div>
@@ -393,41 +449,140 @@
     </div>
     <div class="projects-grid reveal-stagger reveal">
 
-      <div class="proj-card stagger-item">
-        <div class="idx">01</div>
-        <h3>Conversation India Expo</h3>
-        <div class="role">Senior Mobile App Developer</div>
-        <p class="desc">End-to-end Flutter app for a live exhibition — exhibitor lead scanning, participant navigation, and backend technical support during the event.</p>
+      <div class="proj-card stagger-item" data-id="ei-expo">
+        <div class="proj-head">
+          <img class="app-icon" src="https://play-lh.googleusercontent.com/__qOby4iU118jXCAo2JrJaBJNs7fyD81Wk2Th2oPww2QRwyGlF0HhMKGlb23mvBFcsbHlT2i3KmNWOlB-RIcyw=s160" alt="EI Expo icon">
+          <div>
+            <div class="idx">01</div>
+            <h3>EI Expo</h3>
+            <div class="role">Senior Mobile App Developer</div>
+          </div>
+        </div>
+        <p class="desc">Official companion app for Convergence India &amp; Smart Future Cities India — one of India's biggest technology expos. Handles exhibitor lead scanning, live floor navigation, participant networking, and the full conference agenda for thousands of attendees.</p>
         <div class="proj-tags"><span>Flutter</span><span>Firebase</span><span>REST API</span></div>
+        <div class="shot-row">
+          <img src="https://play-lh.googleusercontent.com/snWDHYCdQinM3uaPAp4BGRdijRQ_JCmosIPD7Pj-orRZuhH_rfDPzKqfLP3vT1YBnEDT7PWjcrexLD_Hd07UJg=w526-h296" alt="EI Expo screenshot 1">
+          <img src="https://play-lh.googleusercontent.com/l48JkpPpoG2pWqq1kaIMvejlJY7dFVpWvRmC26ENlz0gKmmEcyFWVresUjKjGA37gEGId0qAkq-gy6xd3gAMkA=w526-h296" alt="EI Expo screenshot 2">
+          <img src="https://play-lh.googleusercontent.com/poJ_KaenUC75D2fmDQ2kzyn9G3Oc7nBubGHPznC0Vq__jxdtRI4Er4Cai0TkOSjZwccR7hhnEv-JB8zZgXX0OA=w526-h296" alt="EI Expo screenshot 3">
+        </div>
+        <div class="view-hint">View full details →</div>
+        <div class="store-badges">
+          <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.leeway.exhibitionsindia&hl=en_IN" target="_blank" rel="noopener">▶ Google Play</a>
+          <a class="store-badge apple" href="https://apps.apple.com/us/app/ei-expo/id6446482170" target="_blank" rel="noopener"> App Store</a>
+        </div>
       </div>
 
-      <div class="proj-card stagger-item">
-        <div class="idx">02</div>
-        <h3>Leeway Softphone</h3>
-        <div class="role">Senior Mobile App Developer</div>
-        <p class="desc">VoIP softphone app enabling voice calling over internet infrastructure, built for reliable real-time performance on mobile.</p>
-        <div class="proj-tags"><span>Flutter</span><span>Provider/GetX</span><span>REST API</span></div>
+      <div class="proj-card stagger-item" data-id="softphone">
+        <div class="proj-head">
+          <img class="app-icon" src="https://play-lh.googleusercontent.com/SLHZWetO1AubOj3Inhnonv-0eadylOtNnGT6kFTmYGOg0rqV2WStckN9HcDa6lfqOe0IMMv1hdLMqQ27WjhmoLw=s160" alt="Leeway Softphone icon">
+          <div>
+            <div class="idx">02</div>
+            <h3>Leeway Softphone</h3>
+            <div class="role">SIP Calls App · Senior Mobile App Developer</div>
+          </div>
+        </div>
+        <p class="desc">A secure SIP-based VoIP calling app for businesses — clean dialer, incoming/outgoing/missed call handling, and encrypted call logs synced by device ID with no personal contact access required.</p>
+        <div class="proj-tags"><span>Flutter</span><span>SIP/VoIP</span><span>REST API</span></div>
+        <div class="shot-row">
+          <img src="https://play-lh.googleusercontent.com/PVVoItFw00l3iYsA25fgsFuBrUZuQSKF35uaTfVNRhzTJnho3D3V5xIRrduTtwGIvWVTYzWrmDe4iOK2qVX_8bo=w526-h296" alt="Leeway Softphone screenshot">
+        </div>
+        <div class="view-hint">View full details →</div>
+        <div class="store-badges">
+          <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.leeway.sip_softphone&hl=en_IN" target="_blank" rel="noopener">▶ Google Play</a>
+          <a class="store-badge apple" href="https://apps.apple.com/in/app/leeway-softphone/id6757228103" target="_blank" rel="noopener"> App Store</a>
+        </div>
       </div>
 
-      <div class="proj-card stagger-item">
-        <div class="idx">03</div>
-        <h3>Vaat App — WhatsApp-style Chat</h3>
-        <div class="role">Senior Mobile App Developer</div>
-        <p class="desc">Real-time messaging app built in Flutter using Firebase — media sharing, user presence tracking, and live chat sync.</p>
+      <div class="proj-card stagger-item" data-id="vaat">
+        <div class="proj-head">
+          <img class="app-icon" src="https://play-lh.googleusercontent.com/xVYfKXC7sgRilinuamazz0iQPu3sI1LFpjW8uwVRnqdBlIwm-zT2kqF5jrMyP8HmmL0KN2lDiHlh-f-lGJTkNPk=s160" alt="Vaat icon">
+          <div>
+            <div class="idx">03</div>
+            <h3>Vaat — WhatsApp-style Chat</h3>
+            <div class="role">Senior Mobile App Developer</div>
+          </div>
+        </div>
+        <p class="desc">Secure internal communication platform for teams — real-time chat, group creation by project or department, media/contact/location sharing, and company-only private messaging with search and notification control.</p>
         <div class="proj-tags"><span>Flutter</span><span>Firebase</span><span>Firestore</span></div>
+        <div class="shot-row">
+          <img src="https://play-lh.googleusercontent.com/1fN7XqHWDzOlJXed2ZlZ-eZ1CsfCOn8AUaTWB2PRb-ke0Yo4dI9OA5hIH4VJqlfwXYKzfOCIvKTcUUw39ZxM=w526-h296" alt="Vaat screenshot 1">
+          <img src="https://play-lh.googleusercontent.com/_c9PjAxeHJPKy_bp55a2IsWpb7-fiKUoe6No7MT1diIY-VqCswTD3BAIZjpboUMFB_eMSY8ejHx89NF5AIsmWA=w526-h296" alt="Vaat screenshot 2">
+          <img src="https://play-lh.googleusercontent.com/KnpoP7JYSfRvMsfdOZXiGGA2Aad0We296GOmgEpa1n1dBER2sRoo0kSEAvWgffXIbS3WTFNhW96_DJ1JjfH_=w526-h296" alt="Vaat screenshot 3">
+        </div>
+        <div class="view-hint">View full details →</div>
+        <div class="store-badges">
+          <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.leeway.leeway_chat&hl=en_IN" target="_blank" rel="noopener">▶ Google Play</a>
+          <a class="store-badge apple" href="https://apps.apple.com/in/app/vaat/id6753797076?l=gu" target="_blank" rel="noopener"> App Store</a>
+        </div>
       </div>
 
-      <div class="proj-card stagger-item">
-        <div class="idx">04</div>
-        <h3>Internal CRM Mobile Solution</h3>
-        <div class="role">Senior Mobile App Developer</div>
-        <p class="desc">Role-based CRM app with dashboards for internal teams — task tracking and reporting. Includes a companion offline macOS CRM built in Flutter.</p>
+      <div class="proj-card stagger-item" data-id="crm">
+        <div class="proj-head">
+          <img class="app-icon" src="https://play-lh.googleusercontent.com/Wh5cufAZ6HgOV5Bkt42PgU0Gp7WX-C4Ev853K6aoXzeLcFnMpFgboc-YOxdKnhM-JITcm1fc4ELyu3BmJeNd=s160" alt="Leeway CRM icon">
+          <div>
+            <div class="idx">04</div>
+            <h3>Internal CRM Mobile Solution</h3>
+            <div class="role">Senior Mobile App Developer</div>
+          </div>
+        </div>
+        <p class="desc">Company-wide CRM app used internally by Leeway Softech employees — daily reporting, task assignment, attendance, leave applications, and appointment tracking in one role-based dashboard.</p>
         <div class="proj-tags"><span>Flutter</span><span>REST API</span><span>Local DB</span></div>
+        <div class="shot-row">
+          <img src="https://play-lh.googleusercontent.com/_o39f0nw2MGut-KIDrtUt96jl9i4P1CuL7VhnY95p_ph8JLVuvk-kKB_ORlr--rpPQ-j3MOeFJJxMWHimlOkcQ=w526-h296" alt="Leeway CRM screenshot 1">
+          <img src="https://play-lh.googleusercontent.com/q2PQlrU3D29JxlwCzgcJsbzpqAskzuf5U8s5Yvmo9p_PAeXTwqNUqLjD5tlAnZJgkYLCu1lXjquU-j-a4BBndIM=w526-h296" alt="Leeway CRM screenshot 2">
+          <img src="https://play-lh.googleusercontent.com/Bp8NN9fAJPrNr1Og2AznbzSltgRERkMTcBqBX-9NCI7s6FwL0WMPkMNeeBHpgbO2hFM49sHO9Q3Kq_7uQnDBWA=w526-h296" alt="Leeway CRM screenshot 3">
+        </div>
+        <div class="view-hint">View full details →</div>
+        <div class="store-badges">
+          <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.leeway.crm.leeway_crm&hl=en_IN" target="_blank" rel="noopener">▶ Google Play</a>
+          <a class="store-badge apple" href="https://apps.apple.com/in/app/leeway-crm/id6475278584" target="_blank" rel="noopener"> App Store</a>
+        </div>
+      </div>
+
+      <div class="proj-card stagger-item wide" data-id="saale-bulls">
+        <div class="proj-head">
+          <img class="app-icon" src="https://play-lh.googleusercontent.com/ss4Cyw8NtyHnkEcyrqlZRthFixsIbE1--KRaIbP5TktgrWhsbWOT5_ezaq2Ug9Bzh9yEZLa1rCeJzzEVAXT4yCE=s160" alt="Saale Bulls icon">
+          <div>
+            <div class="idx">05</div>
+            <h3>Saale Bulls</h3>
+            <div class="role">Mobile App Developer — Client Project</div>
+          </div>
+        </div>
+        <p class="desc">Official fan companion app for Saale Bulls, a German ice hockey club — live match ticker, schedules and league tables, player and team statistics, club news, and push notifications for game-day updates.</p>
+        <div class="proj-tags"><span>Flutter</span><span>Push Notifications</span><span>Live Data</span></div>
+        <div class="shot-row">
+          <img src="https://play-lh.googleusercontent.com/uif2XHynq-sqFhEiV2s6ycnshWoiHSKtcRSJ5XTOju2fKEs6XwLoIcbWVI2s0HERMt_sSxScVTx4ZlBy7656sQ=w526-h296" alt="Saale Bulls screenshot 1">
+          <img src="https://play-lh.googleusercontent.com/Dtpp4lhB2dT8ZEPb-0vjjiEWbhcoaXo8eVjOv5R_UzKIRXp23UWWrTh1J5dlE9xsnoPhjjt_LjAv5pu4AN_iAA=w526-h296" alt="Saale Bulls screenshot 2">
+          <img src="https://play-lh.googleusercontent.com/P7sMZLSYpOYumDwbVXzYKeWISRJtdFvRBby0SHH4uRJ2uBkK522FA-B-vQhhrkBEqbwRH5dfXPAZJaM3R55QTA=w526-h296" alt="Saale Bulls screenshot 3">
+        </div>
+        <div class="view-hint">View full details →</div>
+        <div class="store-badges">
+          <a class="store-badge" href="https://play.google.com/store/apps/details?id=com.leeway.sale_bulls&hl=en" target="_blank" rel="noopener">▶ Google Play</a>
+          <a class="store-badge apple" href="https://apps.apple.com/us/app/saale-bulls/id6444954791" target="_blank" rel="noopener"> App Store</a>
+        </div>
       </div>
 
     </div>
   </div>
 </section>
+
+<!-- ===== Project Detail Modal ===== -->
+<div class="modal-overlay" id="projectModal">
+  <div class="modal-panel" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div class="modal-head">
+      <img id="modalIcon" class="app-icon" style="width:64px;height:64px;" src="" alt="">
+      <div>
+        <h3 id="modalTitle"></h3>
+        <div class="role" id="modalRole"></div>
+      </div>
+    </div>
+    <p class="modal-desc" id="modalDesc"></p>
+    <div class="proj-tags" id="modalTags"></div>
+    <div class="modal-shots" id="modalShots"></div>
+    <div class="store-badges" id="modalBadges"></div>
+  </div>
+</div>
 
 <section id="experience">
   <div class="wrap">
@@ -460,7 +615,7 @@
       <p>Currently open to new freelance Flutter projects — reach out and let's talk.</p>
       <div class="contact-links">
         <a class="primary" href="mailto:info@bnex.co.in">✉ info@bnex.co.in</a>
-        <a href="tel:+918866927033">📞 +91 88669 27033</a>
+        <!--<a href="tel:+918866927033">📞 +91 88669 27033</a>-->
       </div>
     </div>
   </div>
@@ -510,6 +665,115 @@
     });
   }, { threshold: 0.5 });
   counters.forEach(el => counterObserver.observe(el));
+
+  // Project detail modal
+  const PROJECTS = {
+    'ei-expo': {
+      icon: 'https://play-lh.googleusercontent.com/__qOby4iU118jXCAo2JrJaBJNs7fyD81Wk2Th2oPww2QRwyGlF0HhMKGlb23mvBFcsbHlT2i3KmNWOlB-RIcyw=s160',
+      title: 'EI Expo', role: 'Senior Mobile App Developer',
+      desc: "The essential companion app for Convergence India & Smart Future Cities India — one of India's largest technology expos, held at Bharat Mandapam, New Delhi. Previous editions drew 1,000+ participants, 268 startups, and 40 conference sessions. I built the full attendee experience: exhibitor lead scanning, interactive floor navigation, a live participant networking directory, and the complete conference agenda — plus backend technical support during the live event itself.",
+      tags: ['Flutter','Firebase','REST API'],
+      shots: [
+        'https://play-lh.googleusercontent.com/snWDHYCdQinM3uaPAp4BGRdijRQ_JCmosIPD7Pj-orRZuhH_rfDPzKqfLP3vT1YBnEDT7PWjcrexLD_Hd07UJg=w526-h296',
+        'https://play-lh.googleusercontent.com/l48JkpPpoG2pWqq1kaIMvejlJY7dFVpWvRmC26ENlz0gKmmEcyFWVresUjKjGA37gEGId0qAkq-gy6xd3gAMkA=w526-h296',
+        'https://play-lh.googleusercontent.com/poJ_KaenUC75D2fmDQ2kzyn9G3Oc7nBubGHPznC0Vq__jxdtRI4Er4Cai0TkOSjZwccR7hhnEv-JB8zZgXX0OA=w526-h296',
+        'https://play-lh.googleusercontent.com/g-SFxWoVg9r4RxFNHjuNI9Y9gRoV52WnBEMYK1qdm3whyGeTap0l6aE4SPHlIXiuKQ0k_EgreelOrG1TiqL-AQ=w526-h296'
+      ],
+      play: 'https://play.google.com/store/apps/details?id=com.leeway.exhibitionsindia&hl=en_IN',
+      apple: 'https://apps.apple.com/us/app/ei-expo/id6446482170'
+    },
+    'softphone': {
+      icon: 'https://play-lh.googleusercontent.com/SLHZWetO1AubOj3Inhnonv-0eadylOtNnGT6kFTmYGOg0rqV2WStckN9HcDa6lfqOe0IMMv1hdLMqQ27WjhmoLw=s160',
+      title: 'Leeway Softphone', role: 'SIP Calls App · Senior Mobile App Developer',
+      desc: "A secure, SIP-based VoIP calling app built for businesses that need reliable calling infrastructure on mobile. Features a clean dialer interface, full support for incoming, outgoing, and missed SIP calls, and call logs synced securely by an anonymous per-device ID — no personal contacts are ever accessed and no unnecessary permissions are required. Built for business VoIP users, SIP server integrations, and call center teams running custom SIP/VoIP solutions.",
+      tags: ['Flutter','SIP/VoIP','REST API'],
+      shots: ['https://play-lh.googleusercontent.com/PVVoItFw00l3iYsA25fgsFuBrUZuQSKF35uaTfVNRhzTJnho3D3V5xIRrduTtwGIvWVTYzWrmDe4iOK2qVX_8bo=w526-h296'],
+      play: 'https://play.google.com/store/apps/details?id=com.leeway.sip_softphone&hl=en_IN',
+      apple: 'https://apps.apple.com/in/app/leeway-softphone/id6757228103'
+    },
+    'vaat': {
+      icon: 'https://play-lh.googleusercontent.com/xVYfKXC7sgRilinuamazz0iQPu3sI1LFpjW8uwVRnqdBlIwm-zT2kqF5jrMyP8HmmL0KN2lDiHlh-f-lGJTkNPk=s160',
+      title: 'Vaat — WhatsApp-style Chat', role: 'Senior Mobile App Developer',
+      desc: "A secure, private communication platform built for internal teams — think of it as a company-only WhatsApp. Employees can chat in real time, create groups by project or department, and share photos, contacts, locations, videos, and files without leaving the company network. Includes message search, notification control, and encrypted, company-private messaging designed to keep sensitive internal conversations off public networks.",
+      tags: ['Flutter','Firebase','Firestore'],
+      shots: [
+        'https://play-lh.googleusercontent.com/1fN7XqHWDzOlJXed2ZlZ-eZ1CsfCOn8AUaTWB2PRb-ke0Yo4dI9OA5hIH4VJqlfwXYKzfOCIvKTcUUw39ZxM=w526-h296',
+        'https://play-lh.googleusercontent.com/_c9PjAxeHJPKy_bp55a2IsWpb7-fiKUoe6No7MT1diIY-VqCswTD3BAIZjpboUMFB_eMSY8ejHx89NF5AIsmWA=w526-h296',
+        'https://play-lh.googleusercontent.com/KnpoP7JYSfRvMsfdOZXiGGA2Aad0We296GOmgEpa1n1dBER2sRoo0kSEAvWgffXIbS3WTFNhW96_DJ1JjfH_=w526-h296',
+        'https://play-lh.googleusercontent.com/NclVOnoQtoO4NoP0ZUiRsA7TmjOtEcLYbCFljf6Nhr0Oe6gAFxP-u5JO0J4MnJjEW0Pu03IHpLayHKxc2a6vyw=w526-h296'
+      ],
+      play: 'https://play.google.com/store/apps/details?id=com.leeway.leeway_chat&hl=en_IN',
+      apple: 'https://apps.apple.com/in/app/vaat/id6753797076?l=gu'
+    },
+    'crm': {
+      icon: 'https://play-lh.googleusercontent.com/Wh5cufAZ6HgOV5Bkt42PgU0Gp7WX-C4Ev853K6aoXzeLcFnMpFgboc-YOxdKnhM-JITcm1fc4ELyu3BmJeNd=s160',
+      title: 'Internal CRM Mobile Solution', role: 'Senior Mobile App Developer',
+      desc: "A company-wide CRM app built for Leeway Softech's internal teams, replacing manual reporting with a proper mobile system. Employees track daily reporting, get assigned and complete tasks, mark attendance, submit leave applications, and manage appointment details — all from one role-based dashboard that gives managers real visibility into day-to-day operations. A companion offline CRM for macOS was also built in Flutter, handling local database sync and business workflow management without needing constant connectivity.",
+      tags: ['Flutter','REST API','Local DB'],
+      shots: [
+        'https://play-lh.googleusercontent.com/_o39f0nw2MGut-KIDrtUt96jl9i4P1CuL7VhnY95p_ph8JLVuvk-kKB_ORlr--rpPQ-j3MOeFJJxMWHimlOkcQ=w526-h296',
+        'https://play-lh.googleusercontent.com/q2PQlrU3D29JxlwCzgcJsbzpqAskzuf5U8s5Yvmo9p_PAeXTwqNUqLjD5tlAnZJgkYLCu1lXjquU-j-a4BBndIM=w526-h296',
+        'https://play-lh.googleusercontent.com/Bp8NN9fAJPrNr1Og2AznbzSltgRERkMTcBqBX-9NCI7s6FwL0WMPkMNeeBHpgbO2hFM49sHO9Q3Kq_7uQnDBWA=w526-h296',
+        'https://play-lh.googleusercontent.com/__Z53vDn-R8TcoGhD2xSMFRpFxZ0K6icJ-jAKlQ_e_69o2tmgSSVANLJJH4bVSl9Hhu-Ljd7nTCgVYBLiF6t=w526-h296'
+      ],
+      play: 'https://play.google.com/store/apps/details?id=com.leeway.crm.leeway_crm&hl=en_IN',
+      apple: 'https://apps.apple.com/in/app/leeway-crm/id6475278584'
+    },
+    'saale-bulls': {
+      icon: 'https://play-lh.googleusercontent.com/ss4Cyw8NtyHnkEcyrqlZRthFixsIbE1--KRaIbP5TktgrWhsbWOT5_ezaq2Ug9Bzh9yEZLa1rCeJzzEVAXT4yCE=s160',
+      title: 'Saale Bulls', role: 'Mobile App Developer — Client Project',
+      desc: "The official fan companion app for Saale Bulls, a professional ice hockey club based in Halle, Germany. Fans get a live match ticker for real-time play-by-play, full schedules and league tables, deep player and team statistics, club news, and push notifications so they never miss a game-day update — whether they're in the stadium or on the go.",
+      tags: ['Flutter','Push Notifications','Live Data'],
+      shots: [
+        'https://play-lh.googleusercontent.com/uif2XHynq-sqFhEiV2s6ycnshWoiHSKtcRSJ5XTOju2fKEs6XwLoIcbWVI2s0HERMt_sSxScVTx4ZlBy7656sQ=w526-h296',
+        'https://play-lh.googleusercontent.com/Dtpp4lhB2dT8ZEPb-0vjjiEWbhcoaXo8eVjOv5R_UzKIRXp23UWWrTh1J5dlE9xsnoPhjjt_LjAv5pu4AN_iAA=w526-h296',
+        'https://play-lh.googleusercontent.com/P7sMZLSYpOYumDwbVXzYKeWISRJtdFvRBby0SHH4uRJ2uBkK522FA-B-vQhhrkBEqbwRH5dfXPAZJaM3R55QTA=w526-h296',
+        'https://play-lh.googleusercontent.com/eeZKB5NSzRJTg3pB-sTakS-CejvHgUqRb0upDC6HDBwu8HAzYg-Y1z8FOYIlrABnyEASrYdtcppdCWHo4h5EvA=w526-h296'
+      ],
+      play: 'https://play.google.com/store/apps/details?id=com.leeway.sale_bulls&hl=en',
+      apple: 'https://apps.apple.com/us/app/saale-bulls/id6444954791'
+    }
+  };
+
+  const modal = document.getElementById('projectModal');
+  const modalIcon = document.getElementById('modalIcon');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalRole = document.getElementById('modalRole');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalTags = document.getElementById('modalTags');
+  const modalShots = document.getElementById('modalShots');
+  const modalBadges = document.getElementById('modalBadges');
+
+  function openProject(id){
+    const p = PROJECTS[id];
+    if (!p) return;
+    modalIcon.src = p.icon;
+    modalTitle.textContent = p.title;
+    modalRole.textContent = p.role;
+    modalDesc.textContent = p.desc;
+    modalTags.innerHTML = p.tags.map(t => `<span>${t}</span>`).join('');
+    modalShots.innerHTML = p.shots.map(s => `<img src="${s}" alt="${p.title} screenshot">`).join('');
+    modalBadges.innerHTML = `
+      <a class="store-badge" href="${p.play}" target="_blank" rel="noopener">▶ Google Play</a>
+      <a class="store-badge apple" href="${p.apple}" target="_blank" rel="noopener"> App Store</a>
+    `;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeProject(){
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.proj-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return; // let store badge links work normally
+      openProject(card.dataset.id);
+    });
+  });
+  document.getElementById('modalClose').addEventListener('click', closeProject);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeProject(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeProject(); });
 
   // Subtle 3D tilt on project cards
   const cards = document.querySelectorAll('.proj-card');
